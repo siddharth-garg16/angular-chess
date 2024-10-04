@@ -1,3 +1,5 @@
+import { Piece } from "./pieces/piece";
+
 export enum Color {
     White,
     Black
@@ -40,3 +42,41 @@ export const pieceImagePath: Readonly<Record<FENChar, string>> = {
     [FENChar.BlackQueen]: 'pieces/black queen.svg',
     [FENChar.BlackKing]: 'pieces/black king.svg',
 }
+
+export enum MoveType {
+    Capture,
+    Castling,
+    Promotion,
+    Check,
+    CheckMate,
+    BasicMove
+}
+
+export type LastMove = {
+    piece: Piece;
+    prevX: number;
+    prevY: number;
+    currX: number;
+    currY: number;
+    moveType: Set<MoveType>;
+}
+
+type KingChecked = {
+    isInCheck: true;
+    x: number;
+    y: number;
+}
+
+type KingNotChecked = {
+    isInCheck: false;
+}
+
+export type CheckState = KingChecked | KingNotChecked;
+
+export type MoveList = ([string, string?])[];
+
+export type GameHistory = {
+    lastMove: LastMove | undefined;
+    checkState: CheckState;
+    board: (FENChar | null)[][];
+}[];

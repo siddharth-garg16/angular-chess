@@ -2,8 +2,17 @@
     @for (row of chessBoardView; track $index; let x = $index;) {
         <div class="row">
             @for (piece of row; track $index; let y = $index;) {
-                <div class="square" [ngClass]="{'dark': isSquareBlack(x, y), 'light': !isSquareBlack(x, y)}">
+                <div
+                    class="square"
+                    [ngClass]="{
+                        'dark': isSquareBlack(x, y),
+                        'light': !isSquareBlack(x, y),
+                        'selected-square': isSquareSelected(x, y)
+                    }"
+                    (click)="selectingPiece(x, y)"
+                >
                     @if(piece){
+                        <div [ngClass]="{'safe-square': isSquareSafeForSelectedPiece(x, y)}"></div>
                         <img [src]="pieceImagePath[piece]" [alt]="piece" class="piece">
                     }
                 </div>
